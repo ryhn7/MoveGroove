@@ -7,88 +7,23 @@
     android:background="@color/bg"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_playNow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Playing Now"
-        android:fontFamily="@font/urbanistmedium"
-        android:textColor="@color/font"
-        android:textSize="20sp"
-        android:layout_marginTop="35dp"
-        android:layout_centerHorizontal="true"
-        />
-
-    <ImageView
-        android:id="@+id/iv_musicImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_playNow"
-        android:background="@drawable/eximg"
-        android:layout_marginTop="45dp"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="MusicImg" />
-
-    <TextView
-        android:id="@+id/tv_songTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_musicImg"
-        android:text="Song Title"
-        android:fontFamily="@font/urbanistbold"
-        android:textColor="@color/font"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        />
-
-    <SeekBar
-        android:id="@+id/sb_seekBar"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_songTitle"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginRight="28dp"
+        android:background="@color/bg"
+        app:tabIndicatorFullWidth="true"
+        android:foregroundGravity="center"
+        app:tabTextColor="@color/font"
+        app:tabIndicatorColor="@color/font"
         />
 
-    <LinearLayout
-        android:id="@+id/linearLayout_1"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sb_seekBar"
-        android:layout_marginTop="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        >
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tabLayout"
+        />
 
-        <Button
-            android:id="@+id/btn_prev"
-            android:layout_width="29dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="38dp"
-            android:background="@drawable/prev"
-            android:contentDescription="PrevButton"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_play"
-            android:layout_width="29dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="23dp"
-            android:background="@drawable/play"
-            android:contentDescription="PlayButton"
-            tools:ignore="TouchTargetSizeCheck" />
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="29dp"
-            android:layout_height="32dp"
-            android:background="@drawable/next"
-            android:contentDescription="NextButton"
-            tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
-        
-    </LinearLayout>
 
 </RelativeLayout>
