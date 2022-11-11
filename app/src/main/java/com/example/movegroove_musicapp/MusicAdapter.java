@@ -1,5 +1,6 @@
 package com.example.movegroove_musicapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
@@ -34,7 +35,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.file_name.setText(mFiles.get(position).getTitle());
         byte[] image = getAlbumArt(mFiles.get(position).getPath());
         if (image != null) {
