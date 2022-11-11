@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // set window to full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         permission();
     }
 
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         viewPagerAdapter viewPagerAdapter = new viewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new SongFragment(), "Songs");
-        viewPagerAdapter.addFragment(new AlbumFragment(), "Albums");
+//        viewPagerAdapter.addFragment(new AlbumFragment(), "Albums");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }

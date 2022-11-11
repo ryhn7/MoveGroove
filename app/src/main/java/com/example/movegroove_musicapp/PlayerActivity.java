@@ -4,12 +4,18 @@ import static com.example.movegroove_musicapp.MainActivity.musicFiles;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,7 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
 
     TextView song_name, artist_name, duration_played, duration_total;
     ImageView cover_art, nextBtn, prevBtn, backBtn;
@@ -36,10 +42,12 @@ public class PlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         initViews();
         getIntentMethod();
         song_name.setText(listSongs.get(position).getTitle());
         artist_name.setText(listSongs.get(position).getArtist());
+        mediaPlayer.setOnCompletionListener(this);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -162,18 +170,8 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this, 1000);
                 }
             });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    nextBtnClicked();
-                    if (mediaPlayer != null) {
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-                        mediaPlayer.start();
-                        mediaPlayer.setOnCompletionListener(this);
-                    }
-                }
-            });
-            playPauseBtn.setImageResource(R.drawable.ic_pause);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_pause);
             mediaPlayer.start();
         } else {
             mediaPlayer.stop();
@@ -195,18 +193,8 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this, 1000);
                 }
             });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    nextBtnClicked();
-                    if (mediaPlayer != null) {
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-                        mediaPlayer.start();
-                        mediaPlayer.setOnCompletionListener(this);
-                    }
-                }
-            });
-            playPauseBtn.setImageResource(R.drawable.ic_play);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_play);
         }
     }
 
@@ -247,18 +235,8 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this, 1000);
                 }
             });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    nextBtnClicked();
-                    if (mediaPlayer != null) {
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-                        mediaPlayer.start();
-                        mediaPlayer.setOnCompletionListener(this);
-                    }
-                }
-            });
-            playPauseBtn.setImageResource(R.drawable.ic_pause);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_pause);
             mediaPlayer.start();
         } else {
             mediaPlayer.stop();
@@ -280,18 +258,8 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this, 1000);
                 }
             });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    nextBtnClicked();
-                    if (mediaPlayer != null) {
-                        mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
-                        mediaPlayer.start();
-                        mediaPlayer.setOnCompletionListener(this);
-                    }
-                }
-            });
-            playPauseBtn.setImageResource(R.drawable.ic_play);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_play);
         }
     }
 
@@ -349,16 +317,64 @@ public class PlayerActivity extends AppCompatActivity {
         int durationTotal = Integer.parseInt(listSongs.get(position).getDuration()) / 1000;
         duration_total.setText(formattedTime(durationTotal));
         byte[] art = retriever.getEmbeddedPicture();
+        Bitmap bitmap;
         if (art != null) {
-            Glide.with(this)
-                    .asBitmap()
-                    .load(art)
-                    .into(cover_art);
+            bitmap = BitmapFactory.decodeByteArray(art, 0, art.length);
+            ImageAnimation(this, cover_art, bitmap);
         } else {
-            Glide.with(this)
+            Glide.with(getApplicationContext())
                     .asBitmap()
                     .load(R.drawable.cover)
                     .into(cover_art);
+        }
+    }
+
+    public void ImageAnimation(Context context, ImageView imageView, Bitmap bitmap) {
+        Animation animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+        Animation animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+        animOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Glide.with(context).load(bitmap).into(imageView);
+                animIn.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                imageView.startAnimation(animIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        imageView.startAnimation(animOut);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        nextBtnClicked();
+        if (mediaPlayer != null) {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(this);
         }
     }
 }
