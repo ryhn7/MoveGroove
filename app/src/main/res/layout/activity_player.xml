@@ -72,6 +72,36 @@
         android:singleLine="true"
         android:ellipsize="end"
         />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_songArtist"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="31dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal"
+        android:gravity="end">
+        >
+
+        <ImageView
+            android:id="@+id/iv_repeat"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/repeat"
+
+            />
+
+        <ImageView
+            android:id="@+id/iv_shuffle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/shuffle"
+            android:layout_marginLeft="15dp"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_currentTime"
@@ -110,6 +140,8 @@
         android:layout_marginTop="190dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
+        android:progressTint="@color/white"
+        android:thumbTint="@color/white"
         />
 
     <LinearLayout
